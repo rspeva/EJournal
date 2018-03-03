@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#26317c</color>
+    <color name="colorPrimaryDark">#171e48</color>
+    <color name="colorAccent">#2ed1b3</color>
+
+    <color name="colorGood">#6bd66b</color>
+    <color name="colorMedium">#deda65</color>
+    <color name="colorBad">#e45858</color>
+    <color name="colorNeutral">#dcdcdc</color>
+    <color name="colorSurname">#cfe7f2</color>
+    <color name="colorDate">#b3d9ea</color>
+
+
+    <color name="colorPR">#c4abe7</color>
+    <color name="colorLR">#b3bae7</color>
+    <color name="colorKR">#b5edbc</color>
+    <color name="colorAT">#f1eb9b</color>
+    <color name="colorSM">#f1bcbc</color>
+
+
+    <color name="colorButtonText">#ffffff</color>
+    <color name="colorButtonActive">#42a5f5</color>
+
+
+    <color name="colorBadDark">#a14242</color>
+    <color name="colorGoodDark">#58ae58</color>
+
+
+</resources>

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "914101636051",
+    "firebase_url": "https://ejournal-f1016.firebaseio.com",
+    "project_id": "ejournal-f1016",
+    "storage_bucket": "ejournal-f1016.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:914101636051:android:7d977d7fc305536e",
+        "android_client_info": {
+          "package_name": "spevakov.ejournal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "914101636051-4gfcqjimhuo6ajsb3o3eh6lgo321bjet.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "spevakov.ejournal",
+            "certificate_hash": "2c54ebaee8a939c55629d534c613806c1c6f8b38"
+          }
+        },
+        {
+          "client_id": "914101636051-nq658sbqc1897lvn0t7l3s9abj74kks8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWUvYppdRKvMqFCo6Es2gnhCfGcWyJPTc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "914101636051-nq658sbqc1897lvn0t7l3s9abj74kks8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

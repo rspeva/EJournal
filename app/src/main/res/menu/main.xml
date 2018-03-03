@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/add_student"
+        android:orderInCategory="100"
+        android:title="Добавить студента"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/add_subject"
+        android:orderInCategory="100"
+        android:title="Добавить предмет"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/add_group"
+        android:orderInCategory="100"
+        android:title="Добавить группу"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/delete"
+        android:orderInCategory="100"
+        android:title="Удаление"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/change_pass"
+        android:orderInCategory="100"
+        android:title="Сменить пароль"
+        app:showAsAction="never" />
+</menu>

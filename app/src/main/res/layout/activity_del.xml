@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:padding="10dp"
+    tools:context="spevakov.ejournal.activity.DelActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingRight="5dp"
+        android:paddingLeft="5dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:textSize="22dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Курс: " />
+
+        <Spinner
+            android:layout_margin="10dp"
+            android:id="@+id/spinnerCourse"
+            android:textAlignment="center"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingRight="5dp"
+        android:paddingLeft="5dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:textSize="22dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="Группа: " />
+
+        <Spinner
+            android:layout_margin="10dp"
+            android:id="@+id/spinnerGroup"
+            android:textAlignment="center"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+
+
+    <Button
+        android:id="@+id/btnDelGroup"
+        android:layout_height="60dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:background="@drawable/btn"
+        android:textColor="@color/colorButtonText"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:text="Удалить группу" />
+    <Button
+        android:id="@+id/btnDelStudent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:background="@drawable/btn"
+        android:textColor="@color/colorButtonText"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:text="Удалить студента" />
+
+
+
+    <Button
+        android:id="@+id/btnDelSubject"
+        android:layout_height="60dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:background="@drawable/btn"
+        android:textColor="@color/colorButtonText"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:text="Удалить предмет" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="5dp"
+        android:paddingLeft="5dp"
+        android:paddingTop="10dp"
+        android:orientation="horizontal">
+        <Spinner
+            android:visibility="invisible"
+            android:layout_margin="10dp"
+            android:id="@+id/spinnerDel"
+            android:textAlignment="center"
+
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ImageButton
+            android:visibility="invisible"
+            android:id="@+id/btnDel"
+            android:src="@drawable/ic_delete_dis"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_no"
+            android:textColor="@color/colorButtonText"
+            android:layout_margin="4dp"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnClose"
+        android:layout_height="60dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:background="@drawable/btn_no"
+        android:textColor="@color/colorButtonText"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:text="Закрыть" />
+
+
+</LinearLayout>

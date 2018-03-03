@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_weight="1"
+    android:layout_height="wrap_content"
+    tools:context="spevakov.ejournal.activity.Rollcall"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/tvSurnameRollcall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|top"
+        android:paddingBottom="20dp"
+        android:text="Спеваков"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="32sp"
+        android:textStyle="italic" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnNo"
+            android:background="@drawable/btn_no"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="5dp"
+            android:textColor="@color/colorButtonText"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="Отсутствует" />
+
+        <Button
+            android:id="@+id/btnYes"
+            android:background="@drawable/btn_yes"
+            android:layout_weight="1"
+            android:layout_marginLeft="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorButtonText"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="Присутствует" />
+    </LinearLayout>
+
+</LinearLayout>

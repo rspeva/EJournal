@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="spevakov.ejournal.UserActivity">
+
+    <Button
+        android:id="@+id/btnStudent"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:text="Студент"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textColor="@color/colorButtonText"
+        android:background="@drawable/btn"
+        android:layout_marginTop="24dp"
+        android:layout_below="@+id/btnOk"
+        android:layout_alignRight="@+id/btnOk"
+        android:layout_alignEnd="@+id/btnOk" />
+
+    <Button
+        android:textSize="20dp"
+        android:id="@+id/btnTeacher"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="78dp"
+        android:gravity="center"
+        android:text="Преподаватель"
+        android:textColor="@color/colorButtonText"
+        android:background="@drawable/btn"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:id="@+id/etPassword"
+        android:visibility="invisible"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:gravity="center"
+        android:focusableInTouchMode="true"
+        android:inputType="numberPassword"
+        android:textSize="22sp"
+        android:text=""
+        android:layout_below="@+id/btnTeacher"
+        android:layout_alignLeft="@+id/btnTeacher"
+        android:layout_alignStart="@+id/btnTeacher"
+        android:layout_toLeftOf="@+id/btnOk"
+        android:layout_toStartOf="@+id/btnOk" />
+
+    <Button
+        android:id="@+id/btnOk"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OK"
+        android:textColor="@color/colorButtonText"
+        android:background="@drawable/btn"
+        android:layout_alignTop="@+id/etPassword"
+        android:layout_alignRight="@+id/btnTeacher"
+        android:layout_alignEnd="@+id/btnTeacher" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic"
+        android:id="@+id/imageView2"
+        android:layout_above="@+id/textView3"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:text="EJournal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="7dp"
+        android:id="@+id/textView3" />
+</RelativeLayout>

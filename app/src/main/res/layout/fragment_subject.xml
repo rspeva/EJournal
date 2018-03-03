@@ -1,0 +1,65 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="spevakov.ejournal.fragments.fragmentSubject">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Курс"
+            android:textSize="22sp"
+            android:layout_weight="1.07" />
+
+        <Spinner
+            android:id="@+id/spinnerCourseSubject"
+            android:textAlignment="center"
+            android:layout_width="258dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Группа"
+            android:textSize="22sp"
+            android:layout_weight="0.89" />
+
+        <Spinner
+            android:id="@+id/spinnerGroupSubject"
+            android:textAlignment="center"
+            android:layout_width="254dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+        <ListView
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/lvSubjects"
+            android:divider="@color/colorPrimaryDark"
+            android:dividerHeight="1dp"
+            />
+
+    </LinearLayout>
+</FrameLayout>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <TextView
+        android:padding="10dp"
+        android:id="@+id/tvSurnameListmakrs"
+        android:layout_width="242dp"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:textStyle="italic"
+        android:gravity="center"
+        android:text="" />
+
+
+    <Button
+        android:textSize="22sp"
+        android:id="@+id/btnMarks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="4" />
+
+
+</LinearLayout>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="spevakov.ejournal.activity.SubjectActivity"
+    android:layout_weight="1"
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:layout_width="109dp"
+            android:layout_height="wrap_content"
+            android:text="Студент: "
+            android:textSize="22sp" />
+
+        <Spinner
+            android:id="@+id/spinnerStudentProgress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnStudentProgress"
+        android:layout_height="60dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:text="Успеваемость студента"
+        android:background="@drawable/btn"
+        android:textColor="@color/colorButtonText"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        />
+
+    <Button
+        android:id="@+id/btnGroupProgress"
+        android:layout_height="60dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:background="@drawable/btn"
+        android:textColor="@color/colorButtonText"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:text="Успеваемость группы" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <Button
+        android:id="@+id/btnAdd"
+        android:enabled="false"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/btnEditJournal"
+        android:enabled="false"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/btnClose"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:background="@drawable/btn_no"
+        android:textColor="@color/colorButtonText"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:text="Закрыть" />
+
+</LinearLayout>

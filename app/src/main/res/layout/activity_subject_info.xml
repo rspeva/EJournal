@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp"
+    android:layout_weight="1"
+    tools:context="spevakov.ejournal.activity.SubjectInfo">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:padding="5dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/etTypeInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="left"
+            android:text=" "
+            android:focusable="false"
+            android:layout_weight="1"
+            android:inputType="textNoSuggestions"
+            android:textStyle="bold"
+            android:textSize="22sp" />
+
+        <EditText
+            android:id="@+id/etDateInfo"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.01"
+            android:gravity="right"
+            android:focusable="false"
+            android:clickable="false"
+            android:inputType="date"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:layout_marginLeft="40dp"
+            android:text=" "
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="Тема: "
+            android:textSize="22sp" />
+
+        <EditText
+            android:id="@+id/etThemeInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text=" "
+            android:textStyle="italic"
+            android:focusable="false"
+            android:inputType="textNoSuggestions"
+            android:textSize="22sp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="ДЗ: "
+            android:textSize="22sp" />
+
+        <EditText
+            android:id="@+id/etDZInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text=" "
+            android:focusable="false"
+            android:inputType="textNoSuggestions"
+            android:textSize="22sp"
+            android:textStyle="italic" />
+
+    </LinearLayout>
+
+
+    <CheckBox
+        android:clickable="false"
+        android:visibility="invisible"
+        android:layout_marginTop="5dp"
+        android:id="@+id/checkBoxDel"
+        android:textColor="@android:color/holo_red_dark"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Удалить пару" />
+
+    <android.support.v7.widget.SwitchCompat
+
+        android:id="@+id/colorSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin = "20dp"
+        android:textStyle="italic"
+        android:text="Цветовое выделение"
+        android:textSize="18sp"
+        android:textColor="#5b5b5b"/>
+
+    <Button
+        android:id="@+id/btnCloseInfo"
+        android:layout_marginRight="70dp"
+        android:layout_marginLeft="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="@drawable/btn_no"
+        android:textColor="@color/colorButtonText"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:text="Закрыть" />
+
+
+</LinearLayout>
