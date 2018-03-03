@@ -3,6 +3,7 @@ package spevakov.ejournal.activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -29,15 +30,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import spevakov.ejournal.DBHelper;
 import spevakov.ejournal.R;
 
 public class EditJournal extends AppCompatActivity implements View.OnClickListener {
 
     ProgressBar progressBar;
-    TextView tvConnecting;
     String groupEng, titleEng, group, title;
-    String[] theme, dates, surnameEngArr, surnameArr, types, markList, dz, objectid;
+    String[] theme, dates, surnameEngArr, surnameArr, types, markList, dz;
     LinearLayout llSurname, llJournal;
+    DBHelper dbHelper;
     int var, n;
     boolean status;
 
@@ -46,10 +48,8 @@ public class EditJournal extends AppCompatActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_marks_group);
         progressBar = (ProgressBar) findViewById(R.id.progressBarSubjects);
-        tvConnecting = (TextView) findViewById(R.id.tvConnecting);
 
         progressBar.setVisibility(ProgressBar.VISIBLE);
-        tvConnecting.setVisibility(TextView.VISIBLE);
 
         Intent intent = getIntent();
         title = intent.getExtras().getString("Title");
@@ -63,45 +63,36 @@ public class EditJournal extends AppCompatActivity implements View.OnClickListen
 
         llSurname = (LinearLayout) findViewById(R.id.llSurname);
 
-        DataQueryBuilder queryBuilder = DataQueryBuilder.create();
-        queryBuilder.setSortBy("Dates");
-        queryBuilder.setPageSize(100);
+        dbHelper = new DBHelper(this);
+        dbHelper.openDataBase();
 
-        Backendless.Data.of(groupEng + "_" + titleEng).find(queryBuilder, new AsyncCallback<List<Map>>() {
-            @Override
-            public void handleResponse(List<Map> lessonsCollection) {
-                dates = new String[lessonsCollection.size()];
-                theme = new String[lessonsCollection.size()];
-                types = new String[lessonsCollection.size()];
-                dz = new String[lessonsCollection.size()];
-                objectid = new String[lessonsCollection.size()];
-                markList = new String[lessonsCollection.size() * surnameArr.length];
-                String mark;
-                int k = 0;
-                if (lessonsCollection.size() != 0) {
 
-                    for (int i = 0; i < lessonsCollection.size(); i++) {
-                        for (int j = 0; j < surnameEngArr.length; j++) {
-                            mark = lessonsCollection.get(i).get(surnameEngArr[j]).toString();
-                            markList[k] = mark;
-                            k++;
-                        }
-                        dates[i] = lessonsCollection.get(i).get("Dates").toString();
-                        theme[i] = lessonsCollection.get(i).get("Theme").toString();
-                        types[i] = lessonsCollection.get(i).get("Type").toString();
-                        dz[i] = lessonsCollection.get(i).get("DZ").toString();
-                        objectid[i] = lessonsCollection.get(i).get("objectId").toString();
+        if (dbHelper.tableExists(groupEng, titleEng)) {
+            Cursor cursor = dbHelper.query(groupEng + "_" + titleEng, null, null, null, "Date");
+            if (cursor.moveToFirst()) {
+                dates = new String[cursor.getCount()];
+                theme = new String[cursor.getCount()];
+                types = new String[cursor.getCount()];
+                dz = new String[cursor.getCount()];
+                markList = new String[cursor.getCount() * surnameArr.length];
+                int i = 0, k = 0;
+                do {
+                    dates[i] = cursor.getString(0);
+                    theme[i] = cursor.getString(1);
+                    dz[i] = cursor.getString(2);
+                    types[i] = cursor.getString(3);
+                    for (int j = 0; j < surnameEngArr.length; j++) {
+                        markList[k] = cursor.getString(j + 4);
+                        k++;
                     }
-                }
-
+                    i++;
+                } while (cursor.moveToNext());
                 progressBar.setVisibility(ProgressBar.INVISIBLE);
-                tvConnecting.setVisibility(TextView.INVISIBLE);
-
                 LinearLayout.LayoutParams lButtonParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 lButtonParams.setMargins(0, 3, 0, 3);
 
-                for (int i = -1; i < surnameArr.length; i++) {
+                for (i = -1; i < surnameArr.length; i++) {
                     Button btn = new Button(getApplicationContext());
                     btn.setLayoutParams(lButtonParams);
 
@@ -123,22 +114,10 @@ public class EditJournal extends AppCompatActivity implements View.OnClickListen
                         btn.setBackgroundColor(getResources().getColor(R.color.colorSurname));
                         llSurname.addView(btn);
                     }
-
                 }
                 createLayout(ListMarksGroup.checked);
-
-            }
-
-            @Override
-            public void handleFault(BackendlessFault fault) {
-                progressBar.setVisibility(ProgressBar.INVISIBLE);
-                tvConnecting.setVisibility(TextView.INVISIBLE);
-                if (fault.getCode().equals("1009")) showDialog(1);
-                else
-                    Toast.makeText(getApplicationContext(), "Нет подключения к БД: " + fault.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-
+            } else showDialog(1);
+        } else showDialog(1);
     }
 
     @Override
@@ -180,54 +159,42 @@ public class EditJournal extends AppCompatActivity implements View.OnClickListen
         public void onClick(DialogInterface dialog, int which) {
             switch (which) {
                 case Dialog.BUTTON_POSITIVE:
-                    HashMap subject;
-                    int x = 0;
-                    status = true;
-                    progressBar.setVisibility(ProgressBar.VISIBLE);
-                    tvConnecting.setVisibility(TextView.VISIBLE);
-                    for (int k = 0; k < objectid.length; k++) {
-                        if (dates[k].equals("0000")) {
-                            subject = new HashMap<>();
-                            subject.put("objectId", objectid[k]);
-                            Backendless.Data.of(groupEng + "_" + titleEng).remove(subject, new AsyncCallback<Long>() {
-                                @Override
-                                public void handleResponse(Long response) {
-
-                                }
-
-                                @Override
-                                public void handleFault(BackendlessFault fault) {
-
-                                }
-                            });
-                        } else {
-                            subject = new HashMap<>();
-                            subject.put("objectId", objectid[k]);
-                            subject.put("DZ", dz[k]);
-                            subject.put("Theme", theme[k]);
-                            subject.put("Type", types[k]);
-                            subject.put("Dates", dates[k]);
-                            for (int i = 0; i < surnameEngArr.length; i++) {
-                                subject.put(surnameEngArr[i], markList[i + x]);
-                            }
-                            Backendless.Data.of(groupEng + "_" + titleEng).save(subject, new AsyncCallback<Map>() {
-                                @Override
-                                public void handleResponse(Map response) {
-                                    status = true;
-                                }
-
-                                @Override
-                                public void handleFault(BackendlessFault fault) {
-                                    status = false;
-                                }
-                            });
-
-                            x += surnameEngArr.length;
-                        }
-                    }
+//                    HashMap subject;
+//                    int x = 0;
+//                    status = true;
+//                    progressBar.setVisibility(ProgressBar.VISIBLE);
+//                    for (int k = 0; k < dates.length; k++) {
+//                        if (dates[k].equals("0000")) {
+//                           dbHelper.openDataBase();
+//                           dbHelper.deleteLesson(groupEng, titleEng, dates[k], types[k]);
+//                        } else {
+//
+//                            subject = new HashMap<>();
+//                            subject.put("objectId", objectid[k]);
+//                            subject.put("DZ", dz[k]);
+//                            subject.put("Theme", theme[k]);
+//                            subject.put("Type", types[k]);
+//                            subject.put("Dates", dates[k]);
+//                            for (int i = 0; i < surnameEngArr.length; i++) {
+//                                subject.put(surnameEngArr[i], markList[i + x]);
+//                            }
+//                            Backendless.Data.of(groupEng + "_" + titleEng).save(subject, new AsyncCallback<Map>() {
+//                                @Override
+//                                public void handleResponse(Map response) {
+//                                    status = true;
+//                                }
+//
+//                                @Override
+//                                public void handleFault(BackendlessFault fault) {
+//                                    status = false;
+//                                }
+//                            });
+//
+//                            x += surnameEngArr.length;
+//                        }
+                  //  }
 
                     progressBar.setVisibility(ProgressBar.INVISIBLE);
-                    tvConnecting.setVisibility(TextView.INVISIBLE);
                     if (status) finish();
                     else
                         Toast.makeText(getApplicationContext(), "Нет подключения к БД", Toast.LENGTH_SHORT).show();
@@ -253,8 +220,7 @@ public class EditJournal extends AppCompatActivity implements View.OnClickListen
                 LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         lButtonParams.setMargins(0, 3, 0, 3);
         var = 0;
-
-        for (int i = 0; i < objectid.length; i++) {
+        for (int i = 0; i < dates.length; i++) {
             LinearLayout llVertical = new LinearLayout(this);
             llVertical.setLayoutParams(llVerParams);
             llVertical.setOrientation(LinearLayout.VERTICAL);
@@ -270,7 +236,6 @@ public class EditJournal extends AppCompatActivity implements View.OnClickListen
             llVertical.addView(btn1);
 
             for (int j = 0; j < surnameArr.length; j++) {
-
                 final Button btn = new Button(this);
                 btn.setLayoutParams(lButtonParams);
                 if (markList[var].equals("0"))
@@ -309,7 +274,6 @@ public class EditJournal extends AppCompatActivity implements View.OnClickListen
         intent.putExtra("Theme", theme[v.getId()]);
         intent.putExtra("Type", types[v.getId()]);
         intent.putExtra("DZ", dz[v.getId()]);
-        intent.putExtra("objectId", objectid[v.getId()]);
         intent.putExtra("id", v.getId());
         intent.putExtra("checked", ListMarksGroup.checked);
         intent.putExtra("edit", true);
@@ -363,7 +327,6 @@ public class EditJournal extends AppCompatActivity implements View.OnClickListen
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 ((Button) v).setBackgroundColor(colorid);
-                Map<String, Object> m;
                 switch (item.getItemId()) {
                     case R.id.menuN:
                         ((Button) v).setText("H");

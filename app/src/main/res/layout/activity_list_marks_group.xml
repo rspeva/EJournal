@@ -75,14 +75,4 @@ android:layout_marginBottom="50dp"
 android:visibility="invisible"
 android:indeterminateDrawable="@drawable/loader1_progress" />
 
-<TextView
-android:id="@+id/tvConnecting"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_gravity="center_horizontal|center_vertical"
-android:layout_marginBottom="30dp"
-android:layout_marginTop="30dp"
-android:textSize="16sp"
-android:visibility="invisible"
-android:text="Подключение к БД..."/>
 </FrameLayout>

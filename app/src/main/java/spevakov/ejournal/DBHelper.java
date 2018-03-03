@@ -43,8 +43,20 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public void createGroup(String course, String groupRus, String groupEng) {
+    public boolean tableExists(String groupEng, String titleEng){
         sqlDB = SQLiteDatabase.openDatabase(DB_PATH + DB_NAME, null, SQLiteDatabase.OPEN_READWRITE);
+        Cursor cursor = sqlDB.rawQuery("SELECT COUNT(*) FROM sqlite_master WHERE type = ? AND name = ?", new String[] {"table",  groupEng + "_" + titleEng} );
+        if (!cursor.moveToFirst())
+        {
+            cursor.close();
+            return false;
+        }
+        int count = cursor.getInt(0);
+        cursor.close();
+        return count > 0;
+    }
+
+    public void createGroup(String course, String groupRus, String groupEng) {
         ContentValues initialValues = new ContentValues();
         initialValues.put("Course", course);
         initialValues.put("GroupRus", groupRus);
@@ -188,10 +200,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void setMarks(String students[], String marks[], String groupEng, String titleEng, String date, String type) {
         sqlDB = SQLiteDatabase.openDatabase(DB_PATH + DB_NAME, null, SQLiteDatabase.OPEN_READWRITE);
-        for (int i = 0; i < students.length; i++) {
+        for (int i = 0; i < students.length; i++)
             sqlDB.execSQL("update " + groupEng + "_" + titleEng + " set " + students[i] + " = '" + marks[i] + "' where Date = '" + date + "' and Type = '" + type + "'");
-            Log.d("mLog", "update " + groupEng + "_" + titleEng + " set " + students[i] + " = '" + marks[i] + "' where Date = " + date + "and Type = " + type);
-        }
         sqlDB.close();
     }
 
