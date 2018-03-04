@@ -3,10 +3,14 @@ package spevakov.ejournal.activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
@@ -25,13 +29,23 @@ import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import spevakov.ejournal.DBHelper;
 import spevakov.ejournal.R;
+
+import static spevakov.ejournal.UserActivity.DB_NAME;
+import static spevakov.ejournal.UserActivity.DB_PATH;
 
 public class EditJournal extends AppCompatActivity implements View.OnClickListener {
 
@@ -41,7 +55,8 @@ public class EditJournal extends AppCompatActivity implements View.OnClickListen
     LinearLayout llSurname, llJournal;
     DBHelper dbHelper;
     int var, n;
-    boolean status;
+    StorageReference riversRef, storageReference;
+    SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,53 +174,16 @@ public class EditJournal extends AppCompatActivity implements View.OnClickListen
         public void onClick(DialogInterface dialog, int which) {
             switch (which) {
                 case Dialog.BUTTON_POSITIVE:
-//                    HashMap subject;
-//                    int x = 0;
-//                    status = true;
-//                    progressBar.setVisibility(ProgressBar.VISIBLE);
-//                    for (int k = 0; k < dates.length; k++) {
-//                        if (dates[k].equals("0000")) {
-//                           dbHelper.openDataBase();
-//                           dbHelper.deleteLesson(groupEng, titleEng, dates[k], types[k]);
-//                        } else {
-//
-//                            subject = new HashMap<>();
-//                            subject.put("objectId", objectid[k]);
-//                            subject.put("DZ", dz[k]);
-//                            subject.put("Theme", theme[k]);
-//                            subject.put("Type", types[k]);
-//                            subject.put("Dates", dates[k]);
-//                            for (int i = 0; i < surnameEngArr.length; i++) {
-//                                subject.put(surnameEngArr[i], markList[i + x]);
-//                            }
-//                            Backendless.Data.of(groupEng + "_" + titleEng).save(subject, new AsyncCallback<Map>() {
-//                                @Override
-//                                public void handleResponse(Map response) {
-//                                    status = true;
-//                                }
-//
-//                                @Override
-//                                public void handleFault(BackendlessFault fault) {
-//                                    status = false;
-//                                }
-//                            });
-//
-//                            x += surnameEngArr.length;
-//                        }
-                  //  }
-
-                    progressBar.setVisibility(ProgressBar.INVISIBLE);
-                    if (status) finish();
-                    else
-                        Toast.makeText(getApplicationContext(), "Нет подключения к БД", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(ProgressBar.VISIBLE);
+                    dbHelper.updateSubject(groupEng, titleEng, dates, types, theme, dz, surnameEngArr, markList);
+                    updateDB();
+                    finish();
                     break;
                 case Dialog.BUTTON_NEGATIVE:
                     finish();
                     break;
                 case Dialog.BUTTON_NEUTRAL:
                     break;
-
-
             }
         }
     };
@@ -279,8 +257,6 @@ public class EditJournal extends AppCompatActivity implements View.OnClickListen
         intent.putExtra("edit", true);
         intent.putExtra("GroupEng", groupEng);
         intent.putExtra("TitleEng", titleEng);
-
-
         startActivityForResult(intent, 1);
     }
 
@@ -317,7 +293,7 @@ public class EditJournal extends AppCompatActivity implements View.OnClickListen
     }
 
 
-    private void showPopupMenu(final View v, final int colorid) {
+    private void showPopupMenu(final View v, final int colorId) {
         n = v.getId();
         PopupMenu popupMenu = new PopupMenu(getApplicationContext(), v);
         popupMenu.inflate(R.menu.popupmenu);
@@ -326,7 +302,7 @@ public class EditJournal extends AppCompatActivity implements View.OnClickListen
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                ((Button) v).setBackgroundColor(colorid);
+                ((Button) v).setBackgroundColor(colorId);
                 switch (item.getItemId()) {
                     case R.id.menuN:
                         ((Button) v).setText("H");
@@ -354,7 +330,7 @@ public class EditJournal extends AppCompatActivity implements View.OnClickListen
                         item.setEnabled(false);
                         return true;
                     default:
-                        ((Button) v).setBackgroundColor(colorid);
+                        ((Button) v).setBackgroundColor(colorId);
                         return false;
                 }
             }
@@ -362,10 +338,51 @@ public class EditJournal extends AppCompatActivity implements View.OnClickListen
         popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
             @Override
             public void onDismiss(PopupMenu menu) {
-                ((Button) v).setBackgroundColor(colorid);
+                ((Button) v).setBackgroundColor(colorId);
             }
         });
         popupMenu.show();
+    }
+
+    public void updateDB() {
+        storageReference = FirebaseStorage.getInstance().getReference();
+        Uri file = Uri.fromFile(new File(DB_PATH + DB_NAME));
+        riversRef = storageReference.child(DB_NAME);
+        riversRef.putFile(file)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        riversRef.getMetadata().addOnSuccessListener(new OnSuccessListener() {
+                            @Override
+                            public void onSuccess(Object storageMetadata) {
+                                preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                int yourVersion = Integer.valueOf(preferences.getString("version", ""));
+                                yourVersion++;
+                                StorageMetadata metadata = new StorageMetadata.Builder().setCustomMetadata("version", String.valueOf(yourVersion)).build();
+                                riversRef.updateMetadata(metadata);
+                                SharedPreferences.Editor editor = preferences.edit();
+                                editor.putString("version", String.valueOf(yourVersion));
+                                editor.apply();
+                                Toast.makeText(getApplicationContext(), "Сохранение завершено", Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.INVISIBLE);
+                            }
+                        })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception exception) {
+                                        Toast.makeText(getApplicationContext(), "Ошибка! \n" + exception.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+
+                                });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Toast.makeText(getApplicationContext(), "Ошибка! \n" + exception.getMessage(), Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.INVISIBLE);
+                    }
+                });
     }
 
 

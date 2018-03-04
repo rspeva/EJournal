@@ -139,6 +139,7 @@ public class AddLesson extends AppCompatActivity implements View.OnClickListener
                     btnCreate.setEnabled(false);
                     progressBar.setVisibility(ProgressBar.VISIBLE);
                     String[] columns = {"SurnameEng", "Surname"};
+                    dbHelper.openDataBase();
                     cursor = dbHelper.query(groupEng, columns, null, null, "Surname");
                     students = new String[cursor.getCount()];
                     studentsEng = new String[cursor.getCount()];

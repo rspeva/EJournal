@@ -43,11 +43,10 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean tableExists(String groupEng, String titleEng){
+    public boolean tableExists(String groupEng, String titleEng) {
         sqlDB = SQLiteDatabase.openDatabase(DB_PATH + DB_NAME, null, SQLiteDatabase.OPEN_READWRITE);
-        Cursor cursor = sqlDB.rawQuery("SELECT COUNT(*) FROM sqlite_master WHERE type = ? AND name = ?", new String[] {"table",  groupEng + "_" + titleEng} );
-        if (!cursor.moveToFirst())
-        {
+        Cursor cursor = sqlDB.rawQuery("SELECT COUNT(*) FROM sqlite_master WHERE type = ? AND name = ?", new String[]{"table", groupEng + "_" + titleEng});
+        if (!cursor.moveToFirst()) {
             cursor.close();
             return false;
         }
@@ -159,7 +158,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 titleEng[j] = cursor.getString(4);
                 j++;
             } while (cursor.moveToNext());
-        cursor.close();
+        //  cursor.close();
         cursor = query(groupEng, null, null, null, null);
         StringBuilder str = new StringBuilder("Date, Theme, DZ, Type");
         if (cursor.moveToFirst())
@@ -210,6 +209,28 @@ public class DBHelper extends SQLiteOpenHelper {
         String[] wc = {date, type};
         sqlDB.delete(groupEng + "_" + titleEng, "Date = ? AND Type = ?", wc);
         sqlDB.close();
+    }
+
+    public void updateSubject(String groupEng, String titleEng, String[] date, String[] type, String[] theme, String[] dz, String students[], String marks[]) {
+        sqlDB = SQLiteDatabase.openDatabase(DB_PATH + DB_NAME, null, SQLiteDatabase.OPEN_READWRITE);
+        sqlDB.execSQL("DELETE FROM " + groupEng + "_" + titleEng);
+        ContentValues initialValues = new ContentValues();
+        int x = 0;
+        for (int i = 0; i < date.length; i++) {
+            if (date[i].equals("__.__"))
+                deleteLesson(groupEng, titleEng, date[i], type[i]);
+            else {
+                initialValues.put("Date", date[i]);
+                initialValues.put("Theme", theme[i]);
+                initialValues.put("DZ", dz[i]);
+                initialValues.put("Type", type[i]);
+                for (int j = 0; j < students.length; j++)
+                    initialValues.put(students[j], marks[j + x]);
+                sqlDB.insert(groupEng + "_" + titleEng, null, initialValues);
+                initialValues.clear();
+            }
+            x += students.length;
+        }
     }
 
 }

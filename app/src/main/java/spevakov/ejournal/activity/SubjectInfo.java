@@ -24,12 +24,12 @@ import java.util.Map;
 import spevakov.ejournal.R;
 import spevakov.ejournal.activity.SubjectActivity;
 
-public class    SubjectInfo extends Activity {
+public class    SubjectInfo extends Activity implements View.OnClickListener {
     Intent i = new Intent();
     SwitchCompat colorSwitch;
     EditText etThemeInfo, etDZInfo, etDateInfo, etTypeInfo;
     CheckBox checkBox;
-    String date, type, theme, dz, objectid, groupEng, titleEng;
+    String date, type, theme, dz, groupEng, titleEng;
     int id;
     boolean checked, edit;
 
@@ -37,6 +37,12 @@ public class    SubjectInfo extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject_info);
+
+        etDateInfo = (EditText) findViewById(R.id.etDateInfo);
+        etThemeInfo = (EditText) findViewById(R.id.etThemeInfo);
+        etDZInfo = (EditText) findViewById(R.id.etDZInfo);
+        etTypeInfo = (EditText) findViewById(R.id.etTypeInfo);
+        checkBox = (CheckBox) findViewById(R.id.checkBoxDel);
 
         Intent intent = getIntent();
         date = intent.getExtras().getString("Date");
@@ -47,21 +53,14 @@ public class    SubjectInfo extends Activity {
         edit = intent.getExtras().getBoolean("edit");
         id = intent.getExtras().getInt("id");
 
-        setTitle(date + " | " + type);
-
-        etDateInfo = (EditText) findViewById(R.id.etDateInfo);
-        etThemeInfo = (EditText) findViewById(R.id.etThemeInfo);
-        etDZInfo = (EditText) findViewById(R.id.etDZInfo);
-        etTypeInfo = (EditText) findViewById(R.id.etTypeInfo);
-        checkBox = (CheckBox) findViewById(R.id.checkBoxDel);
-
+        if (date.equals("__.__"))
+            checkBox.setChecked(true);
         etDateInfo.setText(date);
         etThemeInfo.setText(theme);
         etDZInfo.setText(dz);
         etTypeInfo.setText(type);
 
         if (edit){
-            objectid = intent.getExtras().getString("objectId");
             groupEng = intent.getExtras().getString("GroupEng");
             titleEng = intent.getExtras().getString("TitleEng");
             etDateInfo.setFocusable(true);
@@ -82,6 +81,7 @@ public class    SubjectInfo extends Activity {
 
             checkBox.setClickable(true);
             checkBox.setVisibility(View.VISIBLE);
+            checkBox.setOnClickListener(this);
         }
 
 
@@ -100,9 +100,8 @@ public class    SubjectInfo extends Activity {
        "Неправильный тип занятия. Доступные типы: \n Лекция \n Практическая \n Лабороторная \n Контрольная \n Атестация \n Семестровая", Toast.LENGTH_LONG).show();
                     else {
                         if (checkBox.isChecked())
-                            i.putExtra("Dates", "0000");
+                            i.putExtra("Dates", "__.__");
                         else i.putExtra("Dates", etDateInfo.getText().toString());
-
                         i.putExtra("DZ", etDZInfo.getText().toString());
                         i.putExtra("Theme", etThemeInfo.getText().toString());
                         i.putExtra("Type", etTypeInfo.getText().toString());
@@ -128,15 +127,17 @@ public class    SubjectInfo extends Activity {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    checked = true;
-                } else {
-                    checked = false;
-                }
+                checked = isChecked;
             }
         });
 
     }
 
-
+    @Override
+    public void onClick(View view) {
+        if (view.getId()==checkBox.getId())
+            if (checkBox.isChecked())
+                etDateInfo.setText("__.__");
+            else etDateInfo.setText("");
+    }
 }
