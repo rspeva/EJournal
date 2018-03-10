@@ -158,9 +158,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 titleEng[j] = cursor.getString(4);
                 j++;
             } while (cursor.moveToNext());
-        //  cursor.close();
         cursor = query(groupEng, null, null, null, null);
-        StringBuilder str = new StringBuilder("Date, Theme, DZ, Type");
+        StringBuilder str = new StringBuilder("Timestamp, Date, Theme, DZ, Type");
         if (cursor.moveToFirst())
             do {
                 if (!cursor.getString(0).equals(surname))
@@ -178,15 +177,16 @@ public class DBHelper extends SQLiteOpenHelper {
         sqlDB.close();
     }
 
-    public void createLesson(String groupEng, String titleEng, String studentsEng[], String date, String theme, String dz, String type) {
+    public void createLesson(String groupEng, String titleEng, String studentsEng[], String date, String theme, String dz, String type, long timestamp) {
         sqlDB = SQLiteDatabase.openDatabase(DB_PATH + DB_NAME, null, SQLiteDatabase.OPEN_READWRITE);
         StringBuilder stringBuilder;
-        stringBuilder = new StringBuilder("create table if not exists " + groupEng + "_" + titleEng + " ( Date text, Theme text, DZ text, Type text");
+        stringBuilder = new StringBuilder("create table if not exists " + groupEng + "_" + titleEng + " (Timestamp integer, Date text, Theme text, DZ text, Type text");
         for (String surname : studentsEng)
             stringBuilder.append(", ").append(surname).append(" text");
         sqlDB.execSQL(stringBuilder.toString() + ");");
 
         ContentValues initialValues = new ContentValues();
+        initialValues.put("Timestamp", timestamp);
         initialValues.put("Date", date);
         initialValues.put("Theme", theme);
         initialValues.put("DZ", dz);
@@ -211,7 +211,7 @@ public class DBHelper extends SQLiteOpenHelper {
         sqlDB.close();
     }
 
-    public void updateSubject(String groupEng, String titleEng, String[] date, String[] type, String[] theme, String[] dz, String students[], String marks[]) {
+    public void updateSubject(String groupEng, String titleEng, String[] date, String[] type, String[] theme, String[] dz, String students[], String marks[], long timestamp[]) {
         sqlDB = SQLiteDatabase.openDatabase(DB_PATH + DB_NAME, null, SQLiteDatabase.OPEN_READWRITE);
         sqlDB.execSQL("DELETE FROM " + groupEng + "_" + titleEng);
         ContentValues initialValues = new ContentValues();
@@ -220,6 +220,7 @@ public class DBHelper extends SQLiteOpenHelper {
             if (date[i].equals("__.__"))
                 deleteLesson(groupEng, titleEng, date[i], type[i]);
             else {
+                initialValues.put("Timestamp", timestamp[i]);
                 initialValues.put("Date", date[i]);
                 initialValues.put("Theme", theme[i]);
                 initialValues.put("DZ", dz[i]);

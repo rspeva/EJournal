@@ -44,6 +44,7 @@ import spevakov.ejournal.R;
 
 import static spevakov.ejournal.UserActivity.DB_NAME;
 import static spevakov.ejournal.UserActivity.DB_PATH;
+import static spevakov.ejournal.UserActivity.login;
 
 public class AddLesson extends AppCompatActivity implements View.OnClickListener {
 
@@ -59,6 +60,7 @@ public class AddLesson extends AppCompatActivity implements View.OnClickListener
     String[] subjectTypes = {"Лекция", "Практическая", "Лабороторная", "Контрольная", "Атестация", "Семестровая"};
     String subjectType;
     boolean created;
+    long timestamp;
     StorageReference riversRef, storageReference;
     SharedPreferences preferences;
 
@@ -129,7 +131,7 @@ public class AddLesson extends AppCompatActivity implements View.OnClickListener
                 date = etDate.getText().toString();
                 theme = etTheme.getText().toString();
                 dz = etDZ.getText().toString();
-                if (!reformatDate(date) || date.length() != 5)
+                if (!reformatDate(date) || date.length() != 5 || date.indexOf(".")!=2)
                     Toast.makeText(this, "Укажите дату в формате 'дд.мм'", Toast.LENGTH_SHORT).show();
                 else {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -151,7 +153,8 @@ public class AddLesson extends AppCompatActivity implements View.OnClickListener
                             i++;
                         } while (cursor.moveToNext());
                     }
-                    dbHelper.createLesson(groupEng, titleEng, studentsEng, date, theme, dz, subjectType);
+                    timestamp = Integer.valueOf(date.substring(0,1))*86400 + Integer.valueOf(date.substring(3,4))*2629743;
+                    dbHelper.createLesson(groupEng, titleEng, studentsEng, date, theme, dz, subjectType, timestamp);
                     updateDB();
                     created = true;
                     btnRollcall.setEnabled(true);

@@ -18,9 +18,6 @@ public class ListMarks extends Activity {
 
 
     String [] students, marks;
-
-    Button btnSave;
-
     LvEditAdapter adapter;
 
 
@@ -46,8 +43,8 @@ public class ListMarks extends Activity {
                 data.add(m);
             }
 
-         adapter = new LvEditAdapter(data, this);
-         ListView lvListMarks = (ListView)findViewById(R.id.lvListMarks);
+        adapter = new LvEditAdapter(data, this);
+        ListView lvListMarks = (ListView)findViewById(R.id.lvListMarks);
         lvListMarks.setAdapter(adapter);
 
 

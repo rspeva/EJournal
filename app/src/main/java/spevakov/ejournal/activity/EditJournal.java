@@ -55,6 +55,7 @@ public class EditJournal extends AppCompatActivity implements View.OnClickListen
     LinearLayout llSurname, llJournal;
     DBHelper dbHelper;
     int var, n;
+    long[] timestamp;
     StorageReference riversRef, storageReference;
     SharedPreferences preferences;
 
@@ -83,8 +84,9 @@ public class EditJournal extends AppCompatActivity implements View.OnClickListen
 
 
         if (dbHelper.tableExists(groupEng, titleEng)) {
-            Cursor cursor = dbHelper.query(groupEng + "_" + titleEng, null, null, null, "Date");
+            Cursor cursor = dbHelper.query(groupEng + "_" + titleEng, null, null, null, "Timestamp");
             if (cursor.moveToFirst()) {
+                timestamp = new long[cursor.getCount()];
                 dates = new String[cursor.getCount()];
                 theme = new String[cursor.getCount()];
                 types = new String[cursor.getCount()];
@@ -92,12 +94,13 @@ public class EditJournal extends AppCompatActivity implements View.OnClickListen
                 markList = new String[cursor.getCount() * surnameArr.length];
                 int i = 0, k = 0;
                 do {
-                    dates[i] = cursor.getString(0);
-                    theme[i] = cursor.getString(1);
-                    dz[i] = cursor.getString(2);
-                    types[i] = cursor.getString(3);
+                    timestamp[i] = cursor.getLong(0);
+                    dates[i] = cursor.getString(1);
+                    theme[i] = cursor.getString(2);
+                    dz[i] = cursor.getString(3);
+                    types[i] = cursor.getString(4);
                     for (int j = 0; j < surnameEngArr.length; j++) {
-                        markList[k] = cursor.getString(j + 4);
+                        markList[k] = cursor.getString(j + 5);
                         k++;
                     }
                     i++;
@@ -175,7 +178,7 @@ public class EditJournal extends AppCompatActivity implements View.OnClickListen
             switch (which) {
                 case Dialog.BUTTON_POSITIVE:
                     progressBar.setVisibility(ProgressBar.VISIBLE);
-                    dbHelper.updateSubject(groupEng, titleEng, dates, types, theme, dz, surnameEngArr, markList);
+                    dbHelper.updateSubject(groupEng, titleEng, dates, types, theme, dz, surnameEngArr, markList,timestamp);
                     updateDB();
                     finish();
                     break;
@@ -265,14 +268,15 @@ public class EditJournal extends AppCompatActivity implements View.OnClickListen
         if (resultCode == RESULT_OK) {
             ListMarksGroup.checked = data.getExtras().getBoolean("checked");
             if (data.getExtras().getBoolean("changed")) {
-                dates[data.getExtras().getInt("id")] = data.getExtras().getString("Dates");
+                String date = data.getExtras().getString("Dates");
+                dates[data.getExtras().getInt("id")] = date;
+                timestamp[data.getExtras().getInt("id")] = Integer.valueOf(date.substring(0,1))*86400 + Integer.valueOf(date.substring(3,4))*2629743;
                 dz[data.getExtras().getInt("id")] = data.getExtras().getString("DZ");
                 theme[data.getExtras().getInt("id")] = data.getExtras().getString("Theme");
                 types[data.getExtras().getInt("id")] = data.getExtras().getString("Type");
             }
             createLayout(ListMarksGroup.checked);
         }
-
     }
 
     private int btnColor(int id) {

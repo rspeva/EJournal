@@ -40,7 +40,7 @@ public class StudentActivity extends AppCompatActivity implements View.OnClickLi
     String[] titleEng, avarage, title, teacher;
     ArrayList<String> allMarks;
     int sumMarks, missSum, x;
-    float sum, vis , act, avr;
+    float sum, vis, act, avr;
     Button tvAvrMark, tvMissSum, tvVisit, tvActivity, btnViewMarks;
 
     @Override
@@ -57,8 +57,6 @@ public class StudentActivity extends AppCompatActivity implements View.OnClickLi
                 StudentActivity.super.finish();
             }
         });
-        Backendless.setUrl("https://api.backendless.com");
-        Backendless.initApp(getApplicationContext(), "7D931783-DF97-9759-FFB4-FFDEF533A900", "3B299654-9E3E-1B25-FF42-7BBA5C135500");
 
         Intent intent = getIntent();
         surname = intent.getExtras().getString("Surname");
@@ -108,7 +106,6 @@ public class StudentActivity extends AppCompatActivity implements View.OnClickLi
                     n++;
                 } while (cursor.moveToNext());
             }
-
 
             progressBar.setVisibility(ProgressBar.VISIBLE);
             tvConnecting.setVisibility(TextView.VISIBLE);
@@ -171,8 +168,7 @@ public class StudentActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    public void fillField(){
-
+    public void fillField() {
         sum = 0;
         missSum = 0;
         sumMarks = 0;
@@ -199,9 +195,8 @@ public class StudentActivity extends AppCompatActivity implements View.OnClickLi
         String visit = String.valueOf(Math.round(100 - vis)) + "%";
         tvVisit.setText(visit);
         act = (float) sumMarks / allMarks.size() * 100;
-        String activ = String.valueOf(Math.round(act)) + "%";
-        tvActivity.setText(activ);
-
+        String activity = String.valueOf(Math.round(act)) + "%";
+        tvActivity.setText(activity);
 
         tvMissSum.setBackgroundColor(getResources().getColor(R.color.colorNeutral));
         if (avr > 4.2) tvAvrMark.setBackgroundColor(getResources().getColor(R.color.colorGood));
@@ -223,11 +218,7 @@ public class StudentActivity extends AppCompatActivity implements View.OnClickLi
 
         progressBar.setVisibility(ProgressBar.INVISIBLE);
         tvConnecting.setVisibility(TextView.INVISIBLE);
-
-
-                btnViewMarks.setEnabled(true);
-
-
+        btnViewMarks.setEnabled(true);
     }
 
 
@@ -236,18 +227,19 @@ public class StudentActivity extends AppCompatActivity implements View.OnClickLi
         Intent intent;
         switch (v.getId()) {
             case R.id.btnViewMarksStudent:
-            intent = new Intent(getApplicationContext(), StudentListMark.class);
-            intent.putExtra("Title", title);
-            intent.putExtra("SurnameEng", surnameEng);
-            intent.putExtra("TitleEng", titleEng);
-            intent.putExtra("GroupEng", groupEng);
-            intent.putExtra("Teacher", teacher);
-            intent.putExtra("Avr", avarage);
-            intent.putExtra("Surname", surname);
-            startActivity(intent);
+                intent = new Intent(getApplicationContext(), StudentListMark.class);
+                intent.putExtra("Title", title);
+                intent.putExtra("SurnameEng", surnameEng);
+                intent.putExtra("TitleEng", titleEng);
+                intent.putExtra("GroupEng", groupEng);
+                intent.putExtra("Teacher", teacher);
+                intent.putExtra("Avr", avarage);
+                intent.putExtra("Surname", surname);
+                startActivity(intent);
                 break;
         }
     }
+
     protected Dialog onCreateDialog(int id) {
         if (id == 1) {
             AlertDialog.Builder adb = new AlertDialog.Builder(this);
